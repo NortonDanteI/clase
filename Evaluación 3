@@ -1,1 +1,100 @@
+/*-----------------------------------------------------------Norton John Irarrázabal Callejas-------------------------------------------------------------------*/
+/*------------------------------------------------------------Conjunto de datos-------------------------------------------------------------*/
+/*
+	//Conjunto de datos:
+	//letra A: torre de vigilacia zona norte
+	//letra B: torre de vigilancia zona sur
+	//letra C: torre de vigilancia zoza este
+	//letra D: base blindada 
+	//letra E: armeria
+	//letra F: centro de abastecimiento
+	//letra G: hospital 1
+	//letra H: hospital 2
+	//grafo no dirijido en el cual cada nodo representa uno de los datos anteriormente mencionados.
+*/
+/*--------------------------------------------------------------Bibliotecas-------------------------------------------------------------------------------------*/
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+/*---------------------------------------------------------Definir Vertice----------------------------------------------------------------------------------*/
+# define vertices 8
+/*---------------------------------------------------------Definir Estructura-------------------------------------------------------------------*/
+typedef struct grafo{
+	char nodos[vertices];
+	int aristas[vertices][vertices];
+} GRAFO;
+/*--------------------------------------------------------Inicializo el grafo--------------------------------------------------------------*/
+GRAFO *inicializar_grafo(){
+	GRAFO *aux_grafo=malloc(sizeof(GRAFO));
+	aux_grafo->nodos[0]='A';
+	aux_grafo->nodos[1]='B';
+	aux_grafo->nodos[2]='C';
+	aux_grafo->nodos[3]='D';
+	aux_grafo->nodos[4]='E';
+	aux_grafo->nodos[5]='F';
+	aux_grafo->nodos[6]='G';
+	aux_grafo->nodos[7]='H';
+	//en el grafo->arista[0][0] se asume que [0][0] es A con A [0][1] A con B y asi sucesivamente.
+	aux_grafo->aristas[0][0]=0;aux_grafo->aristas[0][1]=1;aux_grafo->aristas[0][2]=1;aux_grafo->aristas[0][3]=0;aux_grafo->aristas[0][4]=0;aux_grafo->aristas[0][5]=0;aux_grafo->aristas[0][6]=1;aux_grafo->aristas[0][7]=0;
+	aux_grafo->aristas[1][0]=1;aux_grafo->aristas[1][1]=0;aux_grafo->aristas[1][2]=0;aux_grafo->aristas[1][3]=1;aux_grafo->aristas[1][4]=0;aux_grafo->aristas[1][5]=0;aux_grafo->aristas[1][6]=0;aux_grafo->aristas[1][7]=1;
+	aux_grafo->aristas[2][0]=1;aux_grafo->aristas[2][1]=0;aux_grafo->aristas[2][2]=0;aux_grafo->aristas[2][3]=1;aux_grafo->aristas[2][4]=1;aux_grafo->aristas[2][5]=0;aux_grafo->aristas[2][6]=0;aux_grafo->aristas[2][7]=0;
+	aux_grafo->aristas[3][0]=0;aux_grafo->aristas[3][1]=1;aux_grafo->aristas[3][2]=1;aux_grafo->aristas[3][3]=0;aux_grafo->aristas[3][4]=0;aux_grafo->aristas[3][5]=1;aux_grafo->aristas[3][6]=0;aux_grafo->aristas[3][7]=0;
+	aux_grafo->aristas[4][0]=0;aux_grafo->aristas[4][1]=0;aux_grafo->aristas[4][2]=1;aux_grafo->aristas[4][3]=0;aux_grafo->aristas[4][4]=0;aux_grafo->aristas[4][5]=1;aux_grafo->aristas[4][6]=1;aux_grafo->aristas[4][7]=0;
+	aux_grafo->aristas[5][0]=0;aux_grafo->aristas[5][1]=0;aux_grafo->aristas[5][2]=0;aux_grafo->aristas[5][3]=1;aux_grafo->aristas[5][4]=1;aux_grafo->aristas[5][5]=0;aux_grafo->aristas[5][6]=0;aux_grafo->aristas[5][7]=1;
+	aux_grafo->aristas[6][0]=1;aux_grafo->aristas[6][1]=0;aux_grafo->aristas[6][2]=0;aux_grafo->aristas[6][3]=0;aux_grafo->aristas[6][4]=1;aux_grafo->aristas[6][5]=0;aux_grafo->aristas[6][6]=0;aux_grafo->aristas[6][7]=1;
+	aux_grafo->aristas[7][0]=0;aux_grafo->aristas[7][1]=1;aux_grafo->aristas[7][2]=0;aux_grafo->aristas[7][3]=0;aux_grafo->aristas[7][4]=0;aux_grafo->aristas[7][5]=1;aux_grafo->aristas[7][6]=1;aux_grafo->aristas[7][7]=0;
+	return (aux_grafo);	
+}
+/*---------------------------------------------------Busqueda en Anchura-------------------------------------------------------------------*/
+int BFS(GRAFO *grafoo){
+	int f=0,c=1,resultados=0,validar,es_valido;
+	char bfs[vertices];
+	//Esta busqueda se realiza por niveles
+	//primer paso colocarnos en la raiz en este caso nodo A
+	bfs[resultados]=(grafoo->nodos[0]);
+	while(f<=7){
+		c=1;
+		while(c<=7){//luego imprimir vertices del mismo nivel
+			if(grafoo->aristas[f][c]){//si la arista del nodo f hacia otro nodo c existiese entonces...
+				validar=0;
+				es_valido=1;
+				while(validar<=7){
+					if(	(bfs[validar])	==	(grafoo->nodos[c])	){
+						es_valido=0;
+					}
+					validar++;
+				}		
+				if(es_valido){
+					resultados++;
+					bfs[resultados]=grafoo->nodos[c];
+					printf("%c",bfs[resultados]);getchar();
+				}	
+			}
+			c++;
+		}
+		//despues desplazarnos de nodo y revisar aristas de siguiente nivel
+		f++;
+	}
+	resultados=0;
+	printf("Busqueda en anchura resultado:");
+	while(resultados<=7){
+		printf("%c,",bfs[resultados]);
+		resultados++;
+	}
+	return (1);
+}
+/*------------------------------------------------------------Codigo principal----------------------------------------------------------------*/
+int main(){
+	GRAFO *grafoo;
+	grafoo=inicializar_grafo();
+	BFS(grafoo);
+//	DFS(grafoo);
+	return (1);
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
 
