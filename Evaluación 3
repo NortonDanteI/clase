@@ -1,18 +1,18 @@
-/*-----------------------------------------------------------Norton John Irarrázabal Callejas-------------------------------------------------------------------*/
+/*-----------------------------------------------------Norton John Irarrázabal Callejas-------------------------------------------------------------------*/
 /*------------------------------------------------------------Conjunto de datos-------------------------------------------------------------*/
 /*
-	//Conjunto de datos:
-	//letra A: torre de vigilacia zona norte
-	//letra B: torre de vigilancia zona sur
-	//letra C: torre de vigilancia zoza este
-	//letra D: base blindada 
-	//letra E: armeria
-	//letra F: centro de abastecimiento
-	//letra G: hospital 1
-	//letra H: hospital 2
-	//grafo no dirijido en el cual cada nodo representa uno de los datos anteriormente mencionados.
+	Conjunto de datos:
+	letra A: torre de vigilacia zona norte
+	letra B: torre de vigilancia zona sur
+	letra C: torre de vigilancia zoza este
+	letra D: base blindada 
+	letra E: armeria
+	letra F: centro de abastecimiento
+	letra G: hospital 1
+	letra H: hospital 2
+	grafo no dirijido en el cual cada nodo representa uno de los datos anteriormente mencionados.
 */
-/*--------------------------------------------------------------Bibliotecas-------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------Bibliotecas-------------------------------------------------------------------------------------*/
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,56 +45,164 @@ GRAFO *inicializar_grafo(){
 	aux_grafo->aristas[7][0]=0;aux_grafo->aristas[7][1]=1;aux_grafo->aristas[7][2]=0;aux_grafo->aristas[7][3]=0;aux_grafo->aristas[7][4]=0;aux_grafo->aristas[7][5]=1;aux_grafo->aristas[7][6]=1;aux_grafo->aristas[7][7]=0;
 	return (aux_grafo);	
 }
-/*---------------------------------------------------Busqueda en Anchura-------------------------------------------------------------------*/
-int BFS(GRAFO *grafoo){
-	int f=0,c=1,resultados=0,validar,es_valido;
-	char bfs[vertices];
-	//Esta busqueda se realiza por niveles
-	//primer paso colocarnos en la raiz en este caso nodo A
-	bfs[resultados]=(grafoo->nodos[0]);
-	while(f<=7){
-		c=1;
-		while(c<=7){//luego imprimir vertices del mismo nivel
-			if(grafoo->aristas[f][c]){//si la arista del nodo f hacia otro nodo c existiese entonces...
-				validar=0;
-				es_valido=1;
-				while(validar<=7){
-					if(	(bfs[validar])	==	(grafoo->nodos[c])	){
-						es_valido=0;
+/*------------------------------------------------------------Busqueda en Anchura-------------------------------------------------------------------*/
+int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un grafo, se realiza por niveles.
+	se comienza por el vertice principal y luego hacia sus hijos.*/	
+	int visitados[6],b,c,d,e,g,i,visitado,valido,avanze;char registro[8];
+	//inicializo los arreglos
+	for(int a=0;a<6;a++){
+		visitados[a]=0;
+	}
+	for(int a=0;a<8;a++){
+		registro[a]=' ';
+	}
+	//fin inicializar arreglos
+	printf("\n\nAlgoritmo BFS");getchar();
+	b=0;d=0;e=0;g=0;i=1;avanze=0;
+	//mientras el registro no este lleno entrara al while
+	while(registro[7]==' '){
+		c=0;
+		while(c<8){
+			//si encontro adyacente
+			if(	(grafoo->aristas[b][c]==1) || ((b==0) && (c==0))	){
+				//ver si no ha sido visitado
+				valido=1;
+				for(int f=0;f<8;f++){
+					if(registro[f]==grafoo->nodos[c]){
+						valido=0;
 					}
-					validar++;
-				}		
-				if(es_valido){
-					resultados++;
-					bfs[resultados]=grafoo->nodos[c];
-					printf("%c",bfs[resultados]);getchar();
-				}	
+				}
+				//si es valido guardo en el registro para luego imprimir y tambien guardo el numero representativo del nodo visitado
+				if(valido){
+					registro[d]=grafoo->nodos[c];
+					if(avanze){
+						visitados[e]=c;
+						e++;
+					}
+					//Inicio mostrar estado del recorrido del grafo en BFS
+					printf("\n\nPaso %i)\n",i);i++;
+					printf("\nMe encuentro en el vertice: %c\n",registro[d]);
+					printf("Vertices visitados:");
+					for(int f=0;f<8;f++){
+						printf("%c,",registro[f]);
+					}
+					printf("\nVertices no visitados:");
+					for(int h=0;h<8;h++){
+						visitado=1;
+						for(int g=0;g<8;g++){
+							if(registro[g]==grafoo->nodos[h]){
+								visitado=0;
+							}
+						}
+						if(visitado){
+							printf("%c,",grafoo->nodos[h]);
+						}
+					}
+					//Fin mostrar estado del recorrido del grafo en BFS
+					d++;
+					avanze=1;
+				}
 			}
 			c++;
+		}	
+		//el b toma el valor del nodo visitado
+		b=visitados[g];
+		g++;
+	}
+	//aqui imprimo los el bfs
+	printf("\n\nBFS:");
+	for(int h=0;h<8;h++){
+		printf("%c,",registro[h]);
+	}
+	getchar();getchar();
+	return 1;
+}
+/*------------------------------------------------------------Busqueda en profundidad--------------------------------------------------------------*/
+int DFS(GRAFO *grafoo){/*lo que hace el busqueda en profundidad es ir recorriendo los hijos, de nodo en nodo hasta llegar a un
+	nodo que no tengo mas hijos para luego hacer backtracking. tips: recorre los hijos teniendo prioridad alfabetica o numerica 
+	segun sea el caso.*/
+	int a,b,c,e,i,avanze,cambio,valido,visitado,anterior[6];char registro[8];
+	//inicializo los arreglos
+	for(int a=0;a<7;a++){
+		anterior[a]=0;
+	}
+	for(int a=0;a<8;a++){
+		registro[a]=' ';
+	}
+	system("cls");
+	printf("\n\nAlgoritmo DFS");getchar();
+	//parto del nodo principal en este caso el A
+	a=0;c=0;e=0;i=1;
+	avanze=0;
+	while(registro[7]==' '){
+		b=0;cambio=0;
+		//dejo el registro del nodo actual
+		if(avanze){
+			anterior[e]=a;
+			e++;
 		}
-		//despues desplazarnos de nodo y revisar aristas de siguiente nivel
-		f++;
+		//esta en este while hasta que allá hecho un cambio es decir avanze hacia otro nodo
+		while( (b<8) && (cambio==0) ){
+			//si encuentra un adyacente o si nos encontramos en nodo inicial
+			if(	(grafoo->aristas[a][b]==1) || ((a==0) && (b==0)) ){
+				//ver si no ha sido recorrido
+				valido=1;
+				for(int d=0;d<8;d++){
+					if(registro[d]==grafoo->nodos[b]){
+						valido=0;
+					}
+				}
+				//si no fue recorrido añadimos al registro y avanzamos
+				if(valido){
+					avanze=1;
+					registro[c]=grafoo->nodos[b];
+					a=b;
+					//mostrar estado del recorrido del grafo en DFS
+					printf("\n\nPaso %i)\n",i);i++;
+					printf("\nMe encuentro en el vertice: %c\n",registro[c]);
+					printf("Vertices visitados:");
+					for(int f=0;f<8;f++){
+						printf("%c,",registro[f]);
+					}
+					printf("\nVertices no visitados:");
+					for(int h=0;h<8;h++){
+						visitado=1;
+						for(int g=0;g<8;g++){
+							if(registro[g]==grafoo->nodos[h]){
+								visitado=0;
+							}
+						}
+						if(visitado){
+							printf("%c,",grafoo->nodos[h]);
+						}
+					}
+					//Fin mostrar estado del recorrido del grafo en DFS
+					c++;cambio=1;
+				}
+			}	
+			//si no tiene hijos entonces backtracking
+			if( (b==7)&&(cambio==0) ){
+				e--;
+				a=anterior[e];
+			}
+			b++;	
+		}
 	}
-	resultados=0;
-	printf("Busqueda en anchura resultado:");
-	while(resultados<=7){
-		printf("%c,",bfs[resultados]);
-		resultados++;
+	//aqui imprimo el dfs
+	printf("\n\nDFS:");
+	for(int h=0;h<8;h++){
+		printf("%c,",registro[h]);
 	}
+	getchar();getchar();
+
 	return (1);
 }
-/*------------------------------------------------------------Codigo principal----------------------------------------------------------------*/
+/*-------------------------------------------------------------Codigo principal----------------------------------------------------------------*/
 int main(){
 	GRAFO *grafoo;
 	grafoo=inicializar_grafo();
 	BFS(grafoo);
-//	DFS(grafoo);
+	DFS(grafoo);
 	return (1);
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
-
