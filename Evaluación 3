@@ -47,8 +47,8 @@ GRAFO *inicializar_grafo(){
 }
 /*------------------------------------------------------------Busqueda en Anchura-------------------------------------------------------------------*/
 int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un grafo, se realiza por niveles.
-	se comienza por el vertice principal y luego hacia sus hijos.*/	
-	int visitados[6],b,c,d,e,g,i,visitado,valido,avanze;char registro[8];
+	se comienza por el vertice principal y luego hacia sus hijos, y asi sucesivamente buscamos los adyacentes de estos. */	
+	int visitados[6],b,c,d,e,g,i,visitado,valido,avance;char registro[8];
 	//inicializo los arreglos
 	for(int a=0;a<6;a++){
 		visitados[a]=0;
@@ -58,7 +58,7 @@ int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un 
 	}
 	//fin inicializar arreglos
 	printf("\n\nAlgoritmo BFS");getchar();
-	b=0;d=0;e=0;g=0;i=1;avanze=0;
+	b=0;d=0;e=0;g=0;i=1;avance=0;
 	//mientras el registro no este lleno entrara al while
 	while(registro[7]==' '){
 		c=0;
@@ -75,7 +75,7 @@ int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un 
 				//si es valido guardo en el registro para luego imprimir y tambien guardo el numero representativo del nodo visitado
 				if(valido){
 					registro[d]=grafoo->nodos[c];
-					if(avanze){
+					if(avance){
 						visitados[e]=c;
 						e++;
 					}
@@ -100,7 +100,7 @@ int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un 
 					}
 					//Fin mostrar estado del recorrido del grafo en BFS
 					d++;
-					avanze=1;
+					avance=1;
 				}
 			}
 			c++;
@@ -121,7 +121,7 @@ int BFS(GRAFO *grafoo){/*Es un algoritmo para recorrer o buscar elementos en un 
 int DFS(GRAFO *grafoo){/*lo que hace el busqueda en profundidad es ir recorriendo los hijos, de nodo en nodo hasta llegar a un
 	nodo que no tengo mas hijos para luego hacer backtracking. tips: recorre los hijos teniendo prioridad alfabetica o numerica 
 	segun sea el caso.*/
-	int a,b,c,e,i,avanze,cambio,valido,visitado,anterior[6];char registro[8];
+	int a,b,c,e,i,avance,cambio,valido,visitado,anterior[6];char registro[8];
 	//inicializo los arreglos
 	for(int a=0;a<7;a++){
 		anterior[a]=0;
@@ -133,11 +133,11 @@ int DFS(GRAFO *grafoo){/*lo que hace el busqueda en profundidad es ir recorriend
 	printf("\n\nAlgoritmo DFS");getchar();
 	//parto del nodo principal en este caso el A
 	a=0;c=0;e=0;i=1;
-	avanze=0;
+	avance=0;
 	while(registro[7]==' '){
 		b=0;cambio=0;
 		//dejo el registro del nodo actual
-		if(avanze){
+		if(avance){
 			anterior[e]=a;
 			e++;
 		}
@@ -154,7 +154,7 @@ int DFS(GRAFO *grafoo){/*lo que hace el busqueda en profundidad es ir recorriend
 				}
 				//si no fue recorrido añadimos al registro y avanzamos
 				if(valido){
-					avanze=1;
+					avance=1;
 					registro[c]=grafoo->nodos[b];
 					a=b;
 					//mostrar estado del recorrido del grafo en DFS
@@ -205,4 +205,8 @@ int main(){
 	DFS(grafoo);
 	return (1);
 }
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------------------------------------------------------*/
